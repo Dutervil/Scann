@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="css/bootstrap.css">
+
+</head>
+<body>
+<div class="container-fluid">
+    <div style="background-color: #0780D1">
+        <img style="width: 200px" src="banner.jpeg" alt="banner">
+    </div>
+</div>
+<div class="container pt-4">
+
+    <!--    <h1 class="display-6">Scanning System App</h1>-->
+    <div class="dropdown-divider"></div>
+    <a class="btn btn-success" href="/list">View All Scanning Products</a>
+    <div class="row">
+        <div class="col-md-4">
+            <label>Cashier</label>
+            <input type="text" disabled class="form-control" id="cashier" value=""/>
+        </div>
+
+        <div class="col-md-4">
+            <label>Product Code</label>
+            <input type="text" class="form-control" name="productCode" id="productCode"/>
+        </div>
+
+        <div class="col-md-4">
+            <label>Barcode ID</label>
+            <input type="text" disabled class="form-control" id="barcodeId"  value=""/>
+        </div>
+        <p id="succes"> </p>
+    </div>
+</div>
+<!--<script src="https://code.jquery.com/jquery-1.9.1.min.js"></script>-->
+<script src="js/jquery.js"></script>
+<script src="js/bootstrap.js"></script>
+
+
+<script>
+    $(document).ready(function() {
+        console.log("Jquery is loaded !")
+    });
+
+    $("#productCode").on(' paste keypress ',function (e){
+
+        let cashier_name=$("#cashier").val();
+        let scanner_id=$("#barcodeId").val()
+        let product_code=$("#product_code").val();
+
+
+        if (e.which==13){
+
+            let code= $(this).val();
+            let   _data={
+                "cashier_name": cashier_name,
+                "scanner_id":scanner_id,
+                "product_code":code,
+                "date_scan":"2022-06-01"
+
+            };
+
+            console.log("DATA ",_data);
+            (async () => {
+                const rawResponse = await fetch('http://localhost:8282/productScans', {
+                    method: 'POST',
+                    headers: {
+                        'Accept': 'application/json',
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(_data)
+
+                });
+                $("#productCode").val("");
+                const content = await rawResponse.json();
+
+                console.log(content);
+            })();
+
+        }
+
+    });
+</script>
+</body>
+</html>
