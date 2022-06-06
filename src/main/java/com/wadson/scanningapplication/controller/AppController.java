@@ -21,4 +21,17 @@ public class AppController {
     public String list(){
         return "list";
     }
+
+
+    @GetMapping("/add-product")
+    public String addProduct(){
+        return "addProduct";
+    }
+
+
+    @GetMapping("/dashboard")
+    public String dashboard(){
+        return "dashboard";
+    }
+
 }

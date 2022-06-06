@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="css/bootstrap.css">
+
+    <link rel="stylesheet" type="text/css" href="datatable.css">
+
+
+
+</head>
+<body>
+<div class="container-fluid">
+    <div style="background-color: #0780D1">
+        <img style="width: 200px" src="banner.jpeg" alt="banner">
+    </div>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <div class="container-fluid">
+            <button type="button" class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#navbarCollapse">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarCollapse">
+                <div class="navbar-nav">
+                    <a href="/add-product" class="nav-item nav-link active">Gestion Produit</a>
+                    <a href="/add" class="nav-item nav-link">Scanner Produit</a>
+                    <a href="/dashboard" class="nav-item nav-link">Dashboard</a>
+                </div>
+                <div class="navbar-nav ms-auto">
+                    <a href="/" class="nav-item nav-link">Log Out</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+</div>
+<div class="container pt-2">
+
+    <!--    <h1 class="display-6">Scanning System App</h1>-->
+    <div class="dropdown-divider"></div>
+
+    <div class="card">
+        <div class="card-header">
+            <div class="row">
+                <div class="col-md-4">
+                    <h6 class="display-6">GESTION PRODUITS</h6>
+                </div>
+                <div class="com-md-3">
+                    <a href="/list" class="btn btn-primary">View Sales Products</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="card-body" style="height: 400px; overflow: scroll">
+            <div class="row">
+                <div class="col-md-3">
+                    <div>
+                        <label>Product Code</label>
+                        <input type="text" name="code" id="code" class="form-control" required>
+                    </div>
+                    <div>
+                        <label>Product Name</label>
+                        <input type="text" name="code" id="name" class="form-control" required>
+                    </div>
+
+                    <div>
+                        <label>Product Description</label>
+                        <input type="text" name="code" id="desc" class="form-control" required>
+                    </div>
+
+                    <div>
+                        <label>Product Price</label>
+                        <input type="number" name="code" id="price" class="form-control" required>
+                    </div>
+
+                    <div>
+                        <label>Product Quantity</label>
+                        <input type="number" name="code" id="qty" class="form-control" required>
+                    </div>
+                    <button onclick="save()" class=" btn btn-success">Save</button>
+                </div>
+                <div class="col-md-9">
+                    <table class="table table-responsive-md table-hover">
+                        <thead>
+                        <tr>
+                            <th>Code</th>
+                            <th>Name</th>
+                            <th width="30%">Description</th>
+                            <th>Price</th>
+                            <th>Quanty</th>
+                            <th width="30%" colspan="2">Actions</th>
+                        </tr>
+                        </thead>
+
+                        <tbody id="data">
+
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<!--<script src="js/jquery.js"></script>-->
+
+
+
+<script src="js/bootstrap.js"></script>
+<!--<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.36/pdfmake.min.js"></script>-->
+<script src="js/pdfmake.min.js"></script>
+<script src="js/vfs_fonts.js"></script>
+<script src="js/datatables.min.js"></script>
+
+<script>
+    $(document).ready(function() {
+        list();
+    } );
+async function save() {
+
+    let name = $("#name").val();
+    let code = $("#code").val();
+    let price = $("#price").val();
+    let desc = $("#desc").val();
+    let qty = $("#qty").val();
+
+    const obj = {"name": name, "code": code, "price": price, "description": desc, "quantity": qty};
+
+    const rawResponse = await fetch('http://localhost:8282/products', {
+        method: 'POST',
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(obj)
+
+    });
+    $("#productCode").val("");
+    const content = await rawResponse.json();
+
+    list();
+
+}
+
+function list() {
+
+    fetch("http://localhost:8282/products").then(
+        res => {
+            res.json().then(
+                data => {
+
+                    console.log(data);
+                    if (data.length > 0) {
+
+                        var temp = "";
+                        data.forEach((itemData) => {
+                            temp += "<tr>";
+                            temp += "<td>" + itemData.code + "</td>";
+                            temp += "<td>" + itemData.name + "</td>";
+                            temp += "<td>" + itemData.description + "</td>";
+                            temp += "<td>" + itemData.price + "</td>";
+                            temp += "<td>" + itemData.quantity + "</td>";
+                            temp += "<td>" +
+                                "<button class='btn btn-success' onclick='edit("+itemData.id+")'>Edit</button>" +
+                                "<button class='btn btn-danger' onclick='edit("+itemData.id+")'>delete</button>" +
+                                "</td>";
+
+                        });
+                        document.getElementById('data').innerHTML = temp;
+                    }
+                }
+            )
+        }
+    )
+}
+function edit(id) {
+    alert(id)
+}
+
+
+</script>
+</body>
+</html>

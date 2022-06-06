@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="css/bootstrap.css">
+
+    <link rel="stylesheet" type="text/css" href="datatable.css">
+
+
+
+</head>
+<body>
+<div class="container-fluid">
+    <div style="background-color: #0780D1">
+        <img style="width: 200px" src="banner.jpeg" alt="banner">
+    </div>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <div class="container-fluid">
+            <button type="button" class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#navbarCollapse">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarCollapse">
+                <div class="navbar-nav">
+                    <a href="/add-product" class="nav-item nav-link active">Gestion Produit</a>
+                    <a href="/add" class="nav-item nav-link">Scanner Produit</a>
+                    <a href="/dashboard" class="nav-item nav-link">Dashboard</a>
+                </div>
+                <div class="navbar-nav ms-auto">
+                    <a href="/" class="nav-item nav-link">Log Out</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+</div>
+<div class="container pt-2">
+
+        <h1 class="display-6">Scanning System App</h1>
+    <div class="dropdown-divider"></div>
+
+</div>
+
+
+
+<!--<script src="js/jquery.js"></script>-->
+
+
+
+<script src="js/bootstrap.js"></script>
+<!--<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.36/pdfmake.min.js"></script>-->
+<script src="js/pdfmake.min.js"></script>
+<script src="js/vfs_fonts.js"></script>
+<script src="js/datatables.min.js"></script>
+
+<script>
+    $(document).ready(function() {
+        // console.log("Jquery is loaded !")
+        // $('#myTable').DataTable( {
+        //     dom: 'Bfrtip',
+        //     buttons: [
+        //         'copy', 'excel', 'pdf'
+        //     ]
+    } );
+
+    //     fetch("http://localhost:8282/productScans").then(
+    //         res => {
+    //             res.json().then(
+    //                 data => {
+    //
+    //                     console.log(data);
+    //                     if (data.length > 0) {
+    //
+    //                         var temp = "";
+    //                         data.forEach((itemData) => {
+    //                             temp += "<tr>";
+    //                             temp += "<td>" + itemData.cashier_name + "</td>";
+    //                             temp += "<td>" + itemData.product_code + "</td>";
+    //                             temp += "<td>" + itemData.scanner_id + "</td>";
+    //                             temp += "<td>" + itemData.date_scan + "</td>";
+    //                             temp += "<td>" + itemData.createAt + "</td>";
+    //                             temp += "<td>" + itemData.updatedAt + "</td></tr>";
+    //                         });
+    //                         document.getElementById('data').innerHTML = temp;
+    //                     }
+    //                 }
+    //             )
+    //         }
+    //     )
+    // });
+
+
+</script>
+</body>
+</html>
