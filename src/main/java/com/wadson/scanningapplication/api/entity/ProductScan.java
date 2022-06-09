@@ -15,13 +15,11 @@ import java.util.Date;
 @Entity
 public class ProductScan extends  BaseEntity{
 
-    private String cashier_name;
-
-    private  String scanner_id;
-
-    private  String product_code;
-    @Basic
-    @Temporal(TemporalType.DATE)
-    private Date date_scan;
+    private String name;
+    private  String code;
+    private String description;
+    private  double price;
+    private  int quantity;
+    private  String seller;
 
 }

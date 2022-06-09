@@ -34,30 +34,49 @@
     <!--    <h1 class="display-6">Scanning System App</h1>-->
     <div class="dropdown-divider"></div>
     <a class="btn btn-success" href="/list">View All Scanning Products</a>
-    <div class="row">
-        <div class="col-md-4">
-            <label>Cashier</label>
-            <input type="text" disabled class="form-control" id="cashier" value=""/>
-        </div>
 
-        <div class="col-md-4">
-            <label>Product Code</label>
-            <input type="text" class="form-control" name="productCode" id="productCode"/>
-        </div>
+        <div class="row">
+            <div class="col-md-3">
+                <div class="col-md-12">
+                    <label>Cashier</label>
+                    <input type="text"  class="form-control" id="cashier" value=""/>
+                </div>
+                <div class="col-md-12">
+                    <label>Product Code</label>
+                    <input type="text" class="form-control" name="productCode" id="productCode"/>
+                </div>
+                <div class="mt-3">
+                    <button onclick="clear();" class="btn btn-outline-primary">new </button>
+                </div>
+            </div>
 
-        <div class="col-md-4">
-            <label>Barcode ID</label>
-            <input type="text" disabled class="form-control" id="barcodeId"  value=""/>
+            <div class="col-md-9">
+             <table class="table table-hover">
+                 <thead>
+                     <tr>
+                         <th>Seller</th>
+                         <th>Product code</th>
+                         <th>Description</th>
+                         <th>Date</th>
+                         <th>Amount</th>
+                     </tr>
+                 </thead>
+
+                 <tbody id="data">
+
+                 </tbody>
+             </table>
+            </div>
         </div>
-        <p id="succes"> </p>
-    </div>
 </div>
 <!--<script src="https://code.jquery.com/jquery-1.9.1.min.js"></script>-->
+<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 <script src="js/jquery.js"></script>
 <script src="js/bootstrap.js"></script>
 
 
 <script>
+
     $(document).ready(function() {
         console.log("Jquery is loaded !")
     });
@@ -72,34 +91,75 @@
         if (e.which==13){
 
             let code= $(this).val();
-            let   _data={
-                "cashier_name": cashier_name,
-                "scanner_id":scanner_id,
-                "product_code":code,
-                "date_scan":"2022-06-01"
+            var i=0;
 
-            };
+            fetch("http://localhost:8282/products/"+code).then(
+                res => {
+                    res.json().then(
+                        data => {
 
-            console.log("DATA ",_data);
-            (async () => {
-                const rawResponse = await fetch('http://localhost:8282/productScans', {
-                    method: 'POST',
-                    headers: {
-                        'Accept': 'application/json',
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify(_data)
+                            console.log(data)
 
-                });
-                $("#productCode").val("");
-                const content = await rawResponse.json();
 
-                console.log(content);
-            })();
+                            const sold={
+                                "name":data.name,
+                                "code":data.code,
+                                "description":data.description,
+                                "price":data.price,
+                                "quantity":data.quantity,
+                                "seller":cashier_name
+                            }
+
+                            console.log(sold);
+                            addToCart(sold);
+
+                                var temp = "";
+
+                                    temp += "<tr>";
+                                    temp += "<td>" +cashier_name + "</td>";
+                                    temp += "<td>" + sold.code + "</td>";
+                                    temp += "<td>" + sold.description + "</td>";
+                                    temp += "<td>" + data.createAt + "</td>";
+                                    temp += "<td>" + sold.price + "</td></tr>";
+                                    document.getElementById('data').innerHTML = temp;
+                                    $("#productCode").val("");
+                                    $("#productCode").focus;
+
+
+
+
+                        }
+                    )
+                }
+            )
 
         }
 
     });
+
+    function addToCart(product) {
+        (async () => {
+            const rawResponse = await fetch('http://localhost:8282/productScans', {
+                method: 'POST',
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(product)
+
+            });
+            $("#productCode").val("");
+            const content = await rawResponse.json();
+
+            console.log(content);
+        })();
+    }
+
+    function clear(){
+
+        document.getElementById('data').innerHTML = "";
+        $('#data').load(document.URL +  ' #data');
+    }
 </script>
 </body>
 </html>

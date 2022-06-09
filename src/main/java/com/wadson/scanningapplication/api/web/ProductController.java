@@ -6,6 +6,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Date;
+
 @RestController
 @RequestMapping("/products")
 @CrossOrigin("*")
@@ -16,6 +18,8 @@ public class ProductController {
 
     @PostMapping
     public ResponseEntity<Product> save(@RequestBody Product  product){
+        product.setCreateAt(new Date());
+        product.setUpdatedAt(new Date());
         return ResponseEntity.ok(this.productService.save(product));
     }
 
