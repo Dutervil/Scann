@@ -61,6 +61,7 @@
                     <th>quantity</th>
                     <th>seller</th>
                     <th>Date</th>
+                    <th>Actions</th>
                 </tr>
                 </thead>
                 <tbody id="data">
@@ -78,6 +79,7 @@
                     <th>quantity</th>
                     <th>seller</th>
                     <th>Date</th>
+                    <th>Actions</th>
                 </tr>
                 </tfoot>
             </table>
@@ -100,8 +102,10 @@
 <script>
     $(document).ready(function() {
         console.log("Jquery is loaded !")
+        fetchData();
 
-
+    });
+    function fetchData(){
         fetch("http://localhost:8282/productScans").then(
             res => {
                 res.json().then(
@@ -118,8 +122,9 @@
                                 temp += "<td>" + itemData.price + "</td>";
                                 temp += "<td>" + itemData.quantity + "</td>";
                                 temp += "<td>" + itemData.seller + "</td>" ;
-                                temp += "<td>" + itemData.createAt + "</td>" +
-                                    "</tr>";
+                                temp += "<td>" + itemData.createAt + "</td>"
+                                temp +="<td> <button onclick='remove("+itemData.id+")'class='btn-outline-danger'>delete</button>  </td>"
+                                "</tr>";
                             });
                             document.getElementById('data').innerHTML = temp;
                         }
@@ -127,8 +132,18 @@
                 )
             }
         )
-    });
+    }
 
+    function remove(id){
+        if(confirm("Are you sure you want to delete this record ?"))
+            fetch("http://localhost:8282/productScans/"+id)
+                .then( res => {
+                    console.log(res);
+                fetchData();
+            }  )
+        else
+            alert("No Record Deleted !")
+    }
 
 </script>
 </body>
